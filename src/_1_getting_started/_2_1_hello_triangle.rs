@@ -1,16 +1,16 @@
 #![allow(non_upper_case_globals)]
 extern crate glfw;
-use self::glfw::{Context, Key, Action};
+use self::glfw::{Action, Context, Key};
 
 extern crate gl;
 use self::gl::types::*;
 
-use std::sync::mpsc::Receiver;
 use std::ffi::CString;
-use std::ptr;
-use std::str;
 use std::mem;
 use std::os::raw::c_void;
+use std::ptr;
+use std::str;
+use std::sync::mpsc::Receiver;
 
 // settings
 const SCR_WIDTH: u32 = 800;
@@ -59,7 +59,8 @@ pub fn main_1_2_1() {
 
     // glfw window creation
     // --------------------
-    let (mut window, events) = glfw.create_window(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", glfw::WindowMode::Windowed)
+    let (mut window, events) = glfw
+        .create_window(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", glfw::WindowMode::Windowed)
         .expect("Failed to create GLFW window");
 
     window.make_current();
@@ -86,7 +87,10 @@ pub fn main_1_2_1() {
         gl::GetShaderiv(vertexShader, gl::COMPILE_STATUS, &mut success);
         if success != gl::TRUE as GLint {
             gl::GetShaderInfoLog(vertexShader, 512, ptr::null_mut(), infoLog.as_mut_ptr() as *mut GLchar);
-            println!("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{}", str::from_utf8(&infoLog).unwrap());
+            println!(
+                "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n{}",
+                str::from_utf8(&infoLog).unwrap()
+            );
         }
 
         // fragment shader
@@ -97,8 +101,16 @@ pub fn main_1_2_1() {
         // check for shader compile errors
         gl::GetShaderiv(fragmentShader, gl::COMPILE_STATUS, &mut success);
         if success != gl::TRUE as GLint {
-            gl::GetShaderInfoLog(fragmentShader, 512, ptr::null_mut(), infoLog.as_mut_ptr() as *mut GLchar);
-            println!("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{}", str::from_utf8(&infoLog).unwrap());
+            gl::GetShaderInfoLog(
+                fragmentShader,
+                512,
+                ptr::null_mut(),
+                infoLog.as_mut_ptr() as *mut GLchar,
+            );
+            println!(
+                "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n{}",
+                str::from_utf8(&infoLog).unwrap()
+            );
         }
 
         // link shaders
@@ -110,7 +122,10 @@ pub fn main_1_2_1() {
         gl::GetProgramiv(shaderProgram, gl::LINK_STATUS, &mut success);
         if success != gl::TRUE as GLint {
             gl::GetProgramInfoLog(shaderProgram, 512, ptr::null_mut(), infoLog.as_mut_ptr() as *mut GLchar);
-            println!("ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n{}", str::from_utf8(&infoLog).unwrap());
+            println!(
+                "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n{}",
+                str::from_utf8(&infoLog).unwrap()
+            );
         }
         gl::DeleteShader(vertexShader);
         gl::DeleteShader(fragmentShader);
@@ -126,12 +141,21 @@ pub fn main_1_2_1() {
         gl::BindVertexArray(VAO);
 
         gl::BindBuffer(gl::ARRAY_BUFFER, VBO);
-        gl::BufferData(gl::ARRAY_BUFFER,
-                       (vertices.len() * mem::size_of::<GLfloat>()) as GLsizeiptr,
-                       &vertices[0] as *const f32 as *const c_void,
-                       gl::STATIC_DRAW);
+        gl::BufferData(
+            gl::ARRAY_BUFFER,
+            (vertices.len() * mem::size_of::<GLfloat>()) as GLsizeiptr,
+            &vertices[0] as *const f32 as *const c_void,
+            gl::STATIC_DRAW,
+        );
 
-        gl::VertexAttribPointer(0, 3, gl::FLOAT, gl::FALSE, 3 * mem::size_of::<GLfloat>() as GLsizei, ptr::null());
+        gl::VertexAttribPointer(
+            0,
+            3,
+            gl::FLOAT,
+            gl::FALSE,
+            3 * mem::size_of::<GLfloat>() as GLsizei,
+            ptr::null(),
+        );
         gl::EnableVertexAttribArray(0);
 
         // note that this is allowed, the call to gl::VertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
