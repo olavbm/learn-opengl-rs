@@ -32,6 +32,21 @@ const fragmentShaderSource: &str = r#"
     }
 "#;
 
+fn triangle(p: [f32; 2]) -> std::vec::Vec<f32> {
+    let vertices: [f32; 9] = [
+        p[0] + -0.5,
+        p[1] + -0.5,
+        0.0, // left
+        p[0] + 0.5,
+        p[1] + -0.5,
+        0.0, // right
+        p[0] + 0.0,
+        p[1] + 0.5,
+        0.0, // top
+    ];
+    return vertices.to_vec();
+}
+
 #[allow(non_snake_case)]
 pub fn main_1_2_1() {
     // glfw: initialize and configure
@@ -103,11 +118,7 @@ pub fn main_1_2_1() {
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
         // HINT: type annotation is crucial since default for float literals is f64
-        let vertices: [f32; 9] = [
-            -0.5, -0.5, 0.0, // left
-             0.5, -0.5, 0.0, // right
-             0.0,  0.5, 0.0  // top
-        ];
+        let vertices = triangle([0.3, 0.]);
         let (mut VBO, mut VAO) = (0, 0);
         gl::GenVertexArrays(1, &mut VAO);
         gl::GenBuffers(1, &mut VBO);
