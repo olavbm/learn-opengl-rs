@@ -70,6 +70,7 @@ pub fn main_1_2_1() {
     // gl: load all OpenGL function pointers
     // ---------------------------------------
     gl::load_with(|symbol| window.get_proc_address(symbol) as *const _);
+    let mut vertices: std::vec::Vec<f32> = Vec::new();
 
     let (shaderProgram, VAO) = unsafe {
         // build and compile our shader program
@@ -133,7 +134,10 @@ pub fn main_1_2_1() {
         // set up vertex data (and buffer(s)) and configure vertex attributes
         // ------------------------------------------------------------------
         // HINT: type annotation is crucial since default for float literals is f64
-        let vertices = triangle([0.3, 0.]);
+        vertices = triangle([0.3, 0.]);
+        for foo in triangle([0.5, 0.1]) {
+            vertices.push(foo);
+        }
         let (mut VBO, mut VAO) = (0, 0);
         gl::GenVertexArrays(1, &mut VAO);
         gl::GenBuffers(1, &mut VBO);
@@ -187,7 +191,7 @@ pub fn main_1_2_1() {
             // draw our first triangle
             gl::UseProgram(shaderProgram);
             gl::BindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-            gl::DrawArrays(gl::TRIANGLES, 0, 3);
+            gl::DrawArrays(gl::TRIANGLES, 0, vertices.len() as i32);
             // glBindVertexArray(0); // no need to unbind it every time
         }
 
