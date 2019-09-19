@@ -16,6 +16,9 @@ use std::sync::mpsc::Receiver;
 const SCR_WIDTH: u32 = 800;
 const SCR_HEIGHT: u32 = 600;
 
+
+// test
+
 const vertexShaderSource: &str = r#"
     #version 330 core
     layout (location = 0) in vec3 aPos;
